@@ -1,5 +1,5 @@
 class Pokemon:
-  def __init__(self, name, hp, moves, ptype, attack, defense):
+  def __init__(self, name, hp, moves, ptype, attack, defense): #pokemon objects require parameters for name, hp, moves list, pokemon type, attack num, defense num
     self.name = name
     self.MAXHP = hp
     self.hp = hp
@@ -8,34 +8,33 @@ class Pokemon:
     self.attack = attack
     self.defense = defense
 
-  def __str__(self):
+  def __str__(self): # returns the current status of the pokemon, called from player.py
     if self.hp < 1:
       return f"{self.name} [Fainted]"
+    elif self.hp == self.MAXHP:
+      return "[Max Health]"
     else:
       return f"{self.name} [{self.hp}/{self.MAXHP}hp]"
 
-  def damage(self, amount):
+  def damage(self, amount): #pokemon object method to set the hp of the pokemon, called from challenge.py. Requires integer as the paramater
     if ((self.hp - amount) >= 0):
       self.hp -= amount
     else:
       self.hp = 0 
 
-  def heal(self, amount):
+  def heal(self, amount): #called from main.py. Requires integer as the paramater
     if ((self.hp + amount) > self.MAXHP):
       self.hp = self.MAXHP
     else: 
       self.hp += amount
 
-  def hp_display(self):
-    return f"{self.hp}/{self.MAXHP}"
-    
-  def moves_display(self):
+  def moves_display(self): #display moves details, unused. No need to replicate, unless move stats desired.
     print(f"{self.name}'s Moves:")
     for move in self.moves:
       if move in movedex:
         print(movedex[move])
 
-  def challenge_display(self):
+  def challenge_display(self): # returns a list of moves and a command display, used in challenge.py
     print(f"{self.name} {self.hp_display()}hp")
     number = 1
     string = "\n"
@@ -51,16 +50,17 @@ class Pokemon:
     return string
        
 
-class PokeMoves: 
+class PokeMoves:  #move object, requires paramaters name, damage, and move type 
   def __init__(self, name, damage, mtype):
     self.name = name
     self.damage = damage
     self.type = mtype
 
-  def __str__(self):
+  def __str__(self): #returns move name and type when move object called, used in pokemon.py in the moves_display() method of Pokemon Objext
     return f"{self.name} [Type: {self.type}]"
 
-pokedex = {
+#replace with initialize.py (typedex) and pokedex.py (pokedex + movedex)
+pokedex = { 
     "bulbasaur":Pokemon("Bulbasaur",45,['mega_kick'],['Grass', 'Poison'],49,49),
     "ivysaur":Pokemon("Ivysaur",60,['vice_grip', 'gust'],['Grass', 'Poison'],62,63),
     "venusaur":Pokemon("Venusaur",80,['fly', 'horn_attack', 'fire_punch'],['Grass', 'Poison'],82,83),
