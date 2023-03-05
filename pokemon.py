@@ -12,7 +12,7 @@ class Pokemon:
     if self.hp < 1:
       return f"{self.name} [Fainted]"
     elif self.hp == self.MAXHP:
-      return "[Max Health]"
+      return f"{self.name} [Max Health]"
     else:
       return f"{self.name} [{self.hp}/{self.MAXHP}hp]"
 
