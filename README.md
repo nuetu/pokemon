@@ -9,3 +9,5 @@ Pokemon text game in python!
 3. Copy the typedex from initialize.py to the bottom of pokemon.py 
 
 4. Run main.py, and enjoy! 
+
+Current version does not support pokemon types, and moves given to pokemon from initialize.py are random! 
