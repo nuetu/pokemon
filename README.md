@@ -1,7 +1,7 @@
 # pokemon
 Pokemon text game in python! 
 
-1. Download files 
+1. Download then rename files 
 - pokedex.json @ https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/pokedex.json
 - movedex.json @ https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/moves.json
 
