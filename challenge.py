@@ -1,5 +1,5 @@
 import random #import random library 
-from pokemon import movedex #import the movedex from pokemon.py 
+from pokemon import movedex, typedex #import the movedex and typedex from pokemon.py 
 
 def Challenge(user, computer): #called from main.py, requires user and computer player objects as paramaters, runs a while loop until someone loses
 
@@ -25,31 +25,42 @@ def Challenge(user, computer): #called from main.py, requires user and computer 
 
     clear_screen()
 
-    def calculate_attack(challenger, move): #calculates attack! requires two paramaters, a challenger (Player Object), and a move (Move Object), returns an int damage 
+    def calculate_attack(challenger, move): #calculates attack! requires two paramaters, a challenger (Player Object), and a move (Move key), returns an int damage 
         base_damage = movedex[move].damage #the move's damage stat
         if challenger == user:
             attack = user_pokemon.attack / 100 
             defense = computer_pokemon.defense / 100 + 1
-            damage_multiplier = .9
+            damage_multiplier = 0.9
+            if movedex[move].type in computer_pokemon.types:
+                type_bonus = 0.80
+            elif (len([x for x in computer_pokemon.types if x in typedex[movedex[move].type]]) >= 1):
+                type_bonus = 1.25
+            else:
+                type_bonus = 1
         elif challenger == computer:
             attack = computer_pokemon.attack / 100
             defense = user_pokemon.defense / 100 + 1
             damage_multiplier = 1.1
-        damage = base_damage * (attack / defense) * damage_multiplier #damage done is (the move's damage) x (the attack to defense ratio) * (computer boost / user decrease)
-        return damage
+            if movedex[move].type in computer_pokemon.types:
+                type_bonus = 0.80
+            elif (len([x for x in user_pokemon.types if x in typedex[movedex[move].type]]) >= 1):
+                type_bonus = 1.25
+            else:
+                type_bonus = 1
+        damage = round(base_damage * (attack / defense) * damage_multiplier * type_bonus) #damage done is (the move's damage) x (the attack to defense ratio) * (computer boost / user decrease) * type modifier. Round to nearest whole number
+        return damage, type_bonus
         
-
     def attack(param_pokemon, challenger): #performs the attack sequence, requires a pokemon object, and a player object as the paramaters 
         if challenger == user: # if the user attacks
             attack = input(f"{param_pokemon.challenge_display()}> ") #ask the user which attack (string number) to use, or if they want to pass
             clear_screen()
-            if attack.lower() == "pass": 
+            if attack.lower()[0] == "p": 
                 print(f"{challenger.name} passed.")
                 return True #if the user chooses pass, break the function call, no code below will run, and while loop will break
             try: #make sure the user chooses a correct attack 
                 attack = param_pokemon.moves[int(attack) - 1] #set the input to an integer, and selects the index of the number from the pokemon's move list to set attack to a move object
-                damage = round(calculate_attack(challenger,attack)) #calculate the damage, then round the result to a whole number
-                computer_pokemon.damage(damage) # pokemon object method
+                damage, type_bonus = calculate_attack(challenger,attack) #calculate the damage, return the damage value and the type bonus value
+                computer_pokemon.damage(damage) # pokemon object method 
             except: #if something went wrong, tell the user it was an invalid attack
                 print("Inalid attack")
                 return False #break the function call, no code below will run, and while loop will break
@@ -60,9 +71,13 @@ def Challenge(user, computer): #called from main.py, requires user and computer 
             move = random.choice(param_pokemon.moves) #a random move from the computer's pokemon will be chosen
             if move in movedex: #validate the move 
                 attack = param_pokemon.moves[param_pokemon.moves.index(move)] #select the move object
-                damage = round(calculate_attack(challenger,attack)) #calulate the damage
+                damage, type_bonus = calculate_attack(challenger,attack) #calulate the damage
                 user_pokemon.damage(damage) # pokemon object method
         print(f"{param_pokemon.name} used {movedex[attack].name}!") #print f display the move used 
+        if type_bonus == 1.25:
+            print("It was very effective!")
+        elif type_bonus == 0.80:
+            print("It wasn't very effective...")
         return True #break the while loop
 
     def swap(challenger): #swaps out current pokemon for another pokemon on your team. Requires player object as paramater
@@ -107,12 +122,12 @@ def Challenge(user, computer): #called from main.py, requires user and computer 
         clear_screen()
         back = False 
         while not back:
-            if move.lower() == "attack" and user_pokemon.hp >= 1:
+            if move.lower()[0] == "a" and user_pokemon.hp >= 1:
                 back = attack(param_pokemon, user)
-            elif move.lower() == "pokemon":
+            elif move.lower()[0] == "p":
                 user.view_team()
                 back = swap(user)
-            elif move.lower() == "run":
+            elif move.lower()[0] == "r":
                 print(f"{user.name} fled!")
                 user.losses += 1
                 computer.wins += 1

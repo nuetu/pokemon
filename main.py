@@ -57,7 +57,7 @@ def view_stats(user_pokemon): #called from the commands() function, requires 1 p
             print(f"\n{user.name}'s {x.name}:") # print stats using print f 
             print(f"    {x.hp}/{x.MAXHP}hp")
             print(f"    Type: {x.types}")
-            print(f"    Moves: {x.moves}")
+            print(f"    Moves: {[pokemon.movedex[i].name for i in x.moves if i in pokemon.movedex]}")
             return True # return any value to break the foor loop and not display the print statement below 
     print("You don't have this pokemon!")
 
