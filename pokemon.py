@@ -11,8 +11,6 @@ class Pokemon:
   def __str__(self): # returns the current status of the pokemon, called from player.py
     if self.hp < 1:
       return f"{self.name} [Fainted]"
-    elif self.hp == self.MAXHP:
-      return f"{self.name} [Max Health]"
     else:
       return f"{self.name} [{self.hp}/{self.MAXHP}hp]"
 
@@ -35,7 +33,7 @@ class Pokemon:
         print(movedex[move])
 
   def challenge_display(self): # returns a list of moves and a command display, used in challenge.py
-    print(f"{self.name} {self.hp_display()}hp")
+    print(f"{self.name} [{self.hp}/{self.MAXHP}hp]")
     number = 1
     string = "\n"
     for move in self.moves:

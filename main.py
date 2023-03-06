@@ -118,5 +118,5 @@ def help(): # expansive help statement
 
 command_display = "\n\n[Team][Stats][Me][Help]\n[Heal][Challenge][Quit]\n> " # string variable with multiple line breaks 
 
-while commands(input(f"{command_display}")): #main while loop, passes user input to commands() function, which returns true or false to continue or break loop
+while commands(input(f"{command_display}").lower()): #main while loop, passes user input to commands() function, which returns true or false to continue or break loop
     pass

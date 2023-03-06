@@ -20,6 +20,6 @@ class Player: #player object, requires a name. Defaults balance, team, wins, and
 
     def view_balance(self): #shows balance, used in player.py 
         if self.balance == 1:
-            print(f"{self.balance} coin")
+            return(f"{self.balance} coin")
         else: 
-            print(f"{self.balance} coins")
+            return(f"{self.balance} coins")
