@@ -29,7 +29,7 @@ def init_player(): #initialize the player
     else: # if the user doesnt want a random team
         i = 0
         while i < USER_TEAM_SIZE:#call the loop n times 
-            select_pokemon = input(f"Please enter your pokemon's name {i + 1}/{USER_TEAM_SIZE}: ") #ask the user for a pokemon to add to team, using print f 
+            select_pokemon = input(f"Please enter your pokemon's name {i + 1}/{USER_TEAM_SIZE}: ").lower() #ask the user for a pokemon to add to team, using print f 
             if select_pokemon in pokemon.pokedex: # if the pokemon is valid a.k.a in the generated pokemon list
                 user.team.append(copy.deepcopy(pokemon.pokedex[select_pokemon])) # create a deep copy of the pokemon and add to your team
                 i += 1 #decrease the loop by 1 if pokemon add is successful 

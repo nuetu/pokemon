@@ -26,7 +26,7 @@ def init_player():
     else: 
         i = 0
         while i < USER_TEAM_SIZE:
-            select_pokemon = input(f"Please enter your pokemon's name {i + 1}/{USER_TEAM_SIZE}: ") 
+            select_pokemon = input(f"Please enter your pokemon's name {i + 1}/{USER_TEAM_SIZE}: ").lower()
             if select_pokemon in pokemon.pokedex: 
                 user.team.append(copy.deepcopy(pokemon.pokedex[select_pokemon])) 
                 i += 1 
