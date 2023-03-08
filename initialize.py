@@ -9,7 +9,7 @@ import json
 import random
 
 #creates a file named pokedex.py with AMOUNT different pokemon and moves, use to rapidly add pokemon and move objects
-AMOUNT = 30
+AMOUNT = 60
 
 #opening files
 newfile = open("pokedex.py", "w")
@@ -20,21 +20,27 @@ mfile = json.load(m)
 
 
 #adds random moves to the new pokemon
-def randomMoves():
+def addMoves(param_pokemon):
   moves = []
-  for i in range(random.randint(1, 4)):
-    new_move = mfile[random.randrange(1, AMOUNT)]
-    if new_move["power"] != None:
-      move_name = new_move['ename'].lower().replace(' ', '_')
-      if move_name not in moves:
-        moves.append(move_name)
+  pokemon_types = param_pokemon['type']
+  special_moves = [x for x in mfile[:AMOUNT] if x['type'] in pokemon_types and x["power"] != None]
+  normal_moves = [x for x in mfile[:AMOUNT] if x['type'] == "Normal" and x["power"] != None]
+  for i in range(random.randint(2, 4)):
+    if (i == 0 or i == 1) and len(special_moves) >= 1:
+      new_move = random.choice(special_moves)
+    else:
+      new_move = random.choice(normal_moves)
+    move_name = new_move['ename'].lower().replace(' ', '_')
+    if move_name not in moves:
+      moves.append(move_name)
+      print(pokemon_types, len(special_moves), " -> " ,new_move['type'], len(normal_moves))
   return moves
 
 
 #writing files
 newfile.write("pokedex = {\n")
 for i in pfile[:AMOUNT]:
-  line = f"    \"{i['name']['english'].lower()}\":Pokemon(\"{i['name']['english']}\",{i['base']['HP']},{randomMoves()},{i['type']},{i['base']['Attack']},{i['base']['Defense']}),\n"
+  line = f"    \"{i['name']['english'].lower()}\":Pokemon(\"{i['name']['english']}\",{i['base']['HP']},{addMoves(i)},{i['type']},{i['base']['Attack']},{i['base']['Defense']}),\n"
   newfile.write(line)
 newfile.write("}\n\n")
 
