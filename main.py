@@ -64,11 +64,13 @@ def view_stats(user_pokemon): #called from the commands() function, requires 1 p
 def heal(): #called from the commands() function, no paramaters required
     clear_screen()
     if user.balance >= 50: #costs 50 coins to heal a pokemon
+        user.view_team()
         user_pokemon = input("(50 Coins) Select your pokemon: ").capitalize() #select your pokemon, capitalize input to match pokemon name
         for x in user.team: #loop through your team
-            if x.name == user_pokemon: #if you have a pokemon with the same name as you inputed:
+            if x.name == user_pokemon and x.hp != x.MAXHP: #if you have a pokemon with the same name as you inputed:
                 x.heal(x.MAXHP) #full heal the pokemon using a pokemon object method 
                 user.set_balance(-50) #subtract 50 coins per pokemon // Player method 
+                user.view_team()
                 print(f"{x.name} Healed!") #print f the pokemon was healed 
                 return True # return any value to break the foor loop and not display the print statement below 
         print("You don't have this pokemon!")
